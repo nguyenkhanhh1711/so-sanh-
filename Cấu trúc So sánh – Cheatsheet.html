@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="vi"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cấu trúc So sánh – Cheatsheet</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,600;0,800;1,600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f7faf8;--ink:#12352c;--mut:#8aa89d;--card:#fff;--line:rgba(11,93,75,.08);--g1:#0b5d4b;--g2:#8cc63f;--ok:#1f9d55;--no:#d64545;--okb:#e5f6ec;--nob:#fdeaea;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0e1715;--ink:#e6f2ec;--mut:#6f9186;--card:#16221f;--line:rgba(140,198,63,.08);--g1:#4fd1a5;--g2:#a6e05a;--okb:#133524;--nob:#3a1b1b}}
+*{box-sizing:border-box}html,body{margin:0}
+body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:var(--ink);background:var(--bg);background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:44px 44px;min-height:100vh}
+.top{max-width:820px;margin:auto;padding:14px 16px 0;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.top small{color:var(--g1);font-size:12px;line-height:1.3;font-weight:600}.top small span{color:var(--mut);font-weight:400}
+nav{display:flex;gap:6px;background:var(--card);padding:4px;border-radius:99px;box-shadow:0 2px 10px rgba(11,93,75,.1)}
+nav button{border:0;background:none;color:var(--ink);font:600 13px inherit;font-family:inherit;padding:8px 14px;border-radius:99px;cursor:pointer;transition:.25s}
+nav button.on{background:linear-gradient(90deg,var(--g1),var(--g2));color:#fff}
+main{max-width:820px;margin:auto;padding:14px 16px 40px}
+section[hidden]{display:none}
+.deck{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;border-radius:22px;background:var(--card);box-shadow:0 10px 40px rgba(11,93,75,.12);position:relative}
+.deck::-webkit-scrollbar{display:none}
+.s{min-width:100%;scroll-snap-align:start;padding:30px 26px;min-height:480px;max-height:calc(100dvh - 190px);overflow-y:auto;position:relative}
+.s::before,.s::after{content:"";position:absolute;width:60px;height:36px;background-image:radial-gradient(var(--g1) 1.3px,transparent 1.6px);background-size:14px 14px;opacity:.5}
+.s::before{top:14px;right:18px}.s::after{bottom:14px;left:18px}
+.r{opacity:0;transform:translateY(18px)}
+.s.on .r{animation:up .6s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:calc(var(--d,0)*90ms)}
+@keyframes up{to{opacity:1;transform:none}}
+h1{font-size:clamp(40px,9vw,66px);line-height:1.02;margin:28px 0 14px;letter-spacing:-2px;font-weight:600;background:linear-gradient(90deg,var(--g1),var(--g2));-webkit-background-clip:text;background-clip:text;color:transparent}
+h1 i{font-weight:600}
+h2{font-size:clamp(26px,5.5vw,36px);margin:6px 0 12px;letter-spacing:-1px;background:linear-gradient(90deg,var(--g1),var(--g2));-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-block}
+h3{font-size:18px;margin:14px 0 6px}
+.k{color:var(--mut);font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+.mut{color:var(--mut)}
+.f{display:inline-block;background:linear-gradient(90deg,var(--g1),var(--g2));color:#fff;padding:8px 14px;border-radius:12px;font-weight:600;font-size:14px;margin:6px 0}
+.ex{border-left:3px solid var(--g2);padding:4px 12px;margin:8px 0;font-size:15px}
+.ex span{color:var(--mut);font-size:13px}
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+.box{background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:14px}
+.box b.t{color:var(--g1)}
+table{width:100%;border-collapse:collapse;font-size:14px;margin:8px 0}
+th{text-align:left;color:var(--mut);font-size:12px;text-transform:uppercase;padding:6px}
+td{padding:8px 6px;border-top:1px solid var(--line)}
+td b{color:var(--g1)}
+.tip{background:var(--okb);border-radius:12px;padding:10px 12px;font-size:14px;margin:10px 0}
+.mb{display:flex;gap:10px;align-items:flex-end;height:100px;margin:12px 0}
+.mb b{flex:0 0 58px;border-radius:8px 8px 0 0;background:linear-gradient(var(--g2),var(--g1));color:#fff;font-size:11px;text-align:center;padding-top:4px;transform-origin:bottom;transform:scaleY(0)}
+.s.on .mb b{animation:grow .8s .4s cubic-bezier(.2,.8,.2,1) forwards}
+@keyframes grow{to{transform:none}}
+details{margin:5px 0;background:var(--bg);border-radius:10px;padding:8px 12px;font-size:14px;cursor:pointer}details[open] summary{margin-bottom:4px}details{color:var(--g1);font-weight:600}summary{color:var(--ink);font-weight:400}
+.ctl{display:flex;justify-content:center;align-items:center;gap:12px;margin-top:12px}
+.ctl button{width:42px;height:42px;border-radius:50%;border:0;background:var(--card);color:var(--g1);font-size:18px;box-shadow:0 2px 10px rgba(11,93,75,.15);cursor:pointer}
+.dots{display:flex;gap:6px}.dots i{width:7px;height:7px;border-radius:9px;background:var(--mut);opacity:.4;transition:.3s;cursor:pointer}.dots i.on{width:22px;background:var(--g1);opacity:1}
+.card{background:var(--card);border-radius:22px;padding:22px;box-shadow:0 10px 40px rgba(11,93,75,.12);margin-bottom:14px}
+.sub{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.sub button,.btn{border:1px solid var(--line);background:var(--card);color:var(--ink);font:600 13px inherit;font-family:inherit;padding:8px 14px;border-radius:99px;cursor:pointer}
+.sub button.on,.btn.p{background:var(--g1);color:#fff;border-color:var(--g1)}
+.grid{display:flex;flex-wrap:wrap;gap:5px;margin:10px 0}
+.grid button{width:30px;height:30px;border-radius:9px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:600 12px inherit;font-family:inherit;cursor:pointer}
+.grid .y{background:var(--ok);color:#fff}.grid .n{background:var(--no);color:#fff}.grid .c{outline:2px solid var(--g1)}
+.q{font-size:19px;font-weight:600;margin:8px 0 14px;line-height:1.4}
+.opt{display:block;width:100%;text-align:left;padding:12px 14px;margin:7px 0;border-radius:14px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;font-size:15px;cursor:pointer;transition:.2s}
+.opt:hover:not([disabled]){border-color:var(--g1);transform:translateX(4px)}
+.opt b{color:var(--g1);margin-right:8px}
+.opt.ok{background:var(--okb);border-color:var(--ok)}.opt.no{background:var(--nob);border-color:var(--no);animation:sh .35s}
+.opt[disabled]{cursor:default}.opt.dim{opacity:.55}
+@keyframes sh{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.exp{margin-top:12px;padding:12px 14px;border-radius:14px;background:var(--okb);font-size:14px;line-height:1.5;animation:up .4s both}
+.exp.bad{background:var(--nob)}
+input[type=text]{width:100%;padding:12px 14px;font:inherit;border-radius:14px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink)}
+.row{display:flex;justify-content:space-between;align-items:center;margin-top:14px;gap:8px;flex-wrap:wrap}
+.sc{font-size:13px;color:var(--mut)}.sc b{color:var(--g1)}
+.pl{display:grid;grid-template-columns:50px 1fr 50px;gap:8px;align-items:center;font-size:13px;margin:4px 0}
+input[type=range]{width:100%;accent-color:var(--g1)}
+.bars{display:flex;align-items:flex-end;justify-content:space-around;height:230px;border-bottom:3px solid var(--g1);margin:10px 0 16px}
+.bars div{width:70px;text-align:center;font-weight:600;font-size:13px}
+.bars div i{display:block;border-radius:12px 12px 0 0;background:linear-gradient(var(--g2),var(--g1));transition:height .4s cubic-bezier(.2,.8,.2,1);margin-bottom:4px}
+.out p{margin:4px 0;padding:6px 10px;border-left:3px solid var(--g2);font-size:14px}
+.chip{display:inline-block;padding:8px 14px;border-radius:12px;background:var(--bg);border:1px solid var(--line);font-weight:600;margin:4px 4px 0 0}
+.chip.h{background:linear-gradient(90deg,var(--g1),var(--g2));color:#fff;border:0}
+.hb{height:18px;border-radius:9px;background:linear-gradient(90deg,var(--g1),var(--g2));transition:width .4s;margin:4px 0}
+</style></head><body>
+<header class="top"><small>Instagram-style Cheatsheet<br><span>Cấu trúc So sánh · Comparisons</span></small>
+<nav id="tabs"><button data-t="learn" class="on">Bài học</button><button data-t="viz">Minh họa</button><button data-t="prac">Luyện tập</button></nav></header>
+<main>
+<section id="learn">
+<div class="deck" id="deck">
+
+<article class="s on"><span class="k r" style="--d:0">Cheatsheet · Ngữ pháp</span>
+<h1 class="r" style="--d:1">Introducing<br>The <i>Comparison</i></h1>
+<p class="mut r" style="--d:2">Aka cấu trúc so sánh, nghe thì phức tạp nhưng…</p>
+<h3 class="r" style="--d:3">Let’s break it down…</h3>
+<p class="r mut" style="--d:4">Vuốt ngang hoặc bấm → để lướt từng phần ✨</p></article>
+
+<article class="s"><span class="k r">01 · Bản chất</span><h2 class="r" style="--d:1">Từ Ngắn hay Từ Dài?</h2>
+<p class="r" style="--d:2">So sánh (Comparisons) dùng để đối chiếu đặc điểm, tính chất, mức độ giữa <b>HAI hoặc NHIỀU</b> đối tượng. Mọi công thức đều xoay quanh việc từ đó <b>ngắn</b> hay <b>dài</b>.</p>
+<div class="g2 r" style="--d:3"><div class="box"><b class="t">NGẮN</b><br>1 âm tiết<br><span class="mut">tall, short, fast, hard</span></div>
+<div class="box"><b class="t">DÀI</b><br>từ 2 âm tiết trở lên<br><span class="mut">beautiful, expensive, carefully</span></div>
+<div class="box"><b class="t">ĐẶC BIỆT</b><br>2 âm tiết đuôi <b>-y, -le, -ow, -er, -et</b> coi như NGẮN<br><span class="mut">happy, clever, narrow, gentle</span></div></div>
+<div class="tip r" style="--d:4">Câu có <b>to be</b> ➤ so sánh TÍNH TỪ (She is taller than me). Câu có <b>động từ thường</b> ➤ so sánh TRẠNG TỪ (She runs faster than me).</div></article>
+
+<article class="s"><span class="k r">02 · Chính tả</span><h2 class="r" style="--d:1">Thêm đuôi -er / -est</h2>
+<table class="r" style="--d:2"><tr><th>Quy tắc</th><th>Hơn (-er)</th><th>Nhất (-est)</th></tr>
+<tr><td>Thông thường: thêm trực tiếp</td><td>tall ➤ <b>taller</b><br>short ➤ <b>shorter</b></td><td>the <b>tallest</b><br>the <b>shortest</b></td></tr>
+<tr><td>Tận cùng “e”: chỉ thêm -r / -st</td><td>large ➤ <b>larger</b><br>nice ➤ <b>nicer</b></td><td>the <b>largest</b><br>the <b>nicest</b></td></tr>
+<tr><td>1 nguyên âm + 1 phụ âm: nhân đôi phụ âm cuối</td><td>big ➤ <b>bigger</b><br>hot ➤ <b>hotter</b></td><td>the <b>biggest</b><br>the <b>hottest</b></td></tr>
+<tr><td>Phụ âm + “y”: đổi y ➤ i rồi thêm đuôi</td><td>happy ➤ <b>happier</b><br>easy ➤ <b>easier</b></td><td>the <b>happiest</b><br>the <b>easiest</b></td></tr></table></article>
+
+<article class="s"><span class="k r">03 · So sánh bằng</span><h2 class="r" style="--d:1">Equal: as … as</h2>
+<div class="f r" style="--d:2">S1 + be / V + AS + Adj/Adv + AS + S2</div>
+<div class="ex r" style="--d:3">Nam is <b>as tall as</b> Ba. <span>(Nam cao bằng Ba)</span></div>
+<div class="ex r" style="--d:3">He runs <b>as fast as</b> a horse. <span>(chạy nhanh như ngựa)</span></div>
+<div class="ex r" style="--d:4">I am <b>not as/so</b> rich <b>as</b> Bill Gates. <span>(phủ định: dùng so cũng được)</span></div>
+<div class="mb r" style="--d:5"><b style="height:80%">Ba</b><b style="height:80%">Nam</b></div></article>
+
+<article class="s"><span class="k r">04 · So sánh hơn</span><h2 class="r" style="--d:1">Comparative</h2>
+<p class="r" style="--d:2">Đối chiếu <b>HAI</b> đối tượng, xem bên nào vượt trội hơn.</p>
+<table class="r" style="--d:3"><tr><th>Loại từ</th><th>Công thức</th><th>Ví dụ</th></tr>
+<tr><td><b>NGẮN</b></td><td>S + be/V + Adj/Adv-<b>ER</b> + THAN + S2</td><td>Today is hotter than yesterday.</td></tr>
+<tr><td><b>DÀI</b></td><td>S + be/V + <b>MORE</b> + Adj/Adv + THAN + S2</td><td>This car is more expensive than that one.</td></tr></table>
+<div class="tip r" style="--d:4">Nhấn mạnh sự khác biệt lớn: thêm <b>much, a lot, far</b> trước so sánh hơn. He is <b>much</b> taller than me.</div>
+<div class="mb r" style="--d:5"><b style="height:95%">Nam</b><b style="height:60%">Ba</b></div></article>
+
+<article class="s"><span class="k r">05 · So sánh nhất</span><h2 class="r" style="--d:1">Superlative</h2>
+<p class="r" style="--d:2">Nổi bật nhất trong nhóm từ <b>BA</b> đối tượng trở lên. Dấu hiệu: <i>in the class, in the world, of all…</i></p>
+<table class="r" style="--d:3"><tr><th>Loại từ</th><th>Công thức</th><th>Ví dụ</th></tr>
+<tr><td><b>NGẮN</b></td><td>S + be/V + THE + Adj/Adv-<b>EST</b></td><td>Nam is the tallest in his class.</td></tr>
+<tr><td><b>DÀI</b></td><td>S + be/V + THE <b>MOST</b> + Adj/Adv</td><td>She is the most beautiful girl.</td></tr></table>
+<div class="mb r" style="--d:5"><b style="height:60%">Ba</b><b style="height:98%">👑 Nam</b><b style="height:75%">Lan</b></div></article>
+
+<article class="s"><span class="k r">06 · Bắt buộc học thuộc</span><h2 class="r" style="--d:1">Bất quy tắc</h2>
+<table class="r" style="--d:2"><tr><th>Nguyên thể</th><th>Hơn</th><th>Nhất</th></tr>
+<tr><td>good / well</td><td><b>better</b></td><td>the <b>best</b></td></tr>
+<tr><td>bad / badly</td><td><b>worse</b></td><td>the <b>worst</b></td></tr>
+<tr><td>much / many</td><td><b>more</b></td><td>the <b>most</b></td></tr>
+<tr><td>little</td><td><b>less</b></td><td>the <b>least</b></td></tr>
+<tr><td>far</td><td><b>farther / further</b></td><td>the <b>farthest / furthest</b></td></tr></table></article>
+
+<article class="s"><span class="k r">07 · Nâng cao</span><h2 class="r" style="--d:1">So sánh kép: Càng… càng…</h2>
+<p class="r" style="--d:2">Một thứ thay đổi kéo theo thứ khác thay đổi theo tỉ lệ thuận.</p>
+<div class="f r" style="--d:3">THE + So sánh HƠN + S1 + V1, THE + So sánh HƠN + S2 + V2</div>
+<div class="ex r" style="--d:4"><b>Ngắn–Ngắn:</b> The harder you study, the better your result will be.</div>
+<div class="ex r" style="--d:4"><b>Dài–Dài:</b> The more beautiful she is, the more attractive she becomes.</div>
+<div class="ex r" style="--d:5"><b>Trộn:</b> The older he gets, the more careful he is.</div></article>
+
+<article class="s"><span class="k r">08 · Viết lại câu</span><h2 class="r" style="--d:1">3 dạng kinh điển</h2>
+<div class="box r" style="--d:2"><b class="t">Dạng 1 · Đảo so sánh hơn</b><br>Nam is taller than Ba. ➤ Ba is shorter than Nam. ➤ <b>Ba is not as tall as Nam.</b> <span class="mut">(phổ biến nhất)</span></div><br>
+<div class="box r" style="--d:3"><b class="t">Dạng 2 · Nhất ↔ phủ định</b><br>She is the most beautiful girl in my class. ➤ No one in my class is more beautiful than her. ➤ No one in my class is as beautiful as her.</div><br>
+<div class="box r" style="--d:4"><b class="t">Dạng 3 · Hiện tại hoàn thành + nhất</b><br>I have never watched such an interesting movie. ➤ This is the most interesting movie I have ever watched.</div></article>
+
+<article class="s"><span class="k r">09 · Mini-test</span><h2 class="r" style="--d:1">Thử sức nhanh</h2><p class="mut r" style="--d:1">Bấm vào câu để xem đáp án.</p>
+<div class="r" style="--d:2">
+<details><summary>This book is (interesting) __ that one.</summary>as interesting as</details>
+<details><summary>My sister doesn’t sing (beautifully) __ my mother.</summary>as beautifully as</details>
+<details><summary>My house is (small) __ than yours.</summary>smaller</details>
+<details><summary>She speaks English (fluently) __ than her brother.</summary>more fluently</details>
+<details><summary>This lesson is much (difficult) __ than the previous one.</summary>more difficult</details>
+<details><summary>Russia is (large) __ country in the world.</summary>the largest</details>
+<details><summary>Who is (popular) __ singer in Vietnam now?</summary>the most popular</details>
+<details><summary>I feel much (good) __ today than yesterday.</summary>better</details>
+<details><summary>That was (bad) __ movie I have ever seen.</summary>the worst</details>
+<details><summary>No one in our team plays football better than John. ➤ John is…</summary>the best football player in our team</details>
+<details><summary>English is easier than Math. ➤ Math is not…</summary>as easy as English</details></div></article>
+</div>
+<div class="ctl"><button id="pv">←</button><div class="dots" id="dots"></div><button id="nx">→</button></div>
+</section>
+
+<section id="viz" hidden>
+<div class="card"><span class="k">Minh họa 1</span><h2>Ai cao hơn ai?</h2><p class="mut">Kéo thanh trượt để đổi chiều cao, câu so sánh sẽ tự thay đổi.</p>
+<div class="bars" id="bars"></div><div id="sl"></div><div class="out" id="out"></div></div>
+<div class="card"><span class="k">Minh họa 2</span><h2>So sánh kép</h2><p class="mut">The more you study, the better your result.</p>
+<div class="pl"><span>Học</span><input type="range" id="hr" min="0" max="10" value="3"><b id="hv"></b></div>
+<div class="mut" style="font-size:13px">Số giờ học</div><div class="hb" id="hb1"></div>
+<div class="mut" style="font-size:13px">Kết quả</div><div class="hb" id="hb2"></div><div class="out" id="o2"></div></div>
+<div class="card"><span class="k">Minh họa 3</span><h2>Máy biến đổi từ</h2><p class="mut">Chọn một từ để xem ba dạng.</p><div id="wm"></div><div id="wo" style="margin-top:12px"></div></div>
+</section>
+
+<section id="prac" hidden>
+<div class="sub" id="sub"><button data-m="m" class="on">Trắc nghiệm (40)</button><button data-m="r">Viết lại câu (30)</button><button data-m="h">Form ĐGNL – HSA (20)</button></div>
+<div class="card" id="pbox"></div>
+</section>
+</main>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+/* sound */
+let ac;function beep(a){try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();a.forEach(([f,t,d,y])=>{const o=ac.createOscillator(),g=ac.createGain(),n=ac.currentTime+t;o.type=y||'sine';o.frequency.value=f;g.gain.setValueAtTime(.0001,n);g.gain.exponentialRampToValueAtTime(.22,n+.02);g.gain.exponentialRampToValueAtTime(.0001,n+d);o.connect(g);g.connect(ac.destination);o.start(n);o.stop(n+d+.05)})}catch(e){}}
+const ok=()=>beep([[660,0,.15],[880,.12,.3]]),no=()=>beep([[220,0,.2,'sawtooth'],[150,.18,.3,'sawtooth']]);
+/* tabs */
+$$('#tabs button').forEach(b=>b.onclick=()=>{$$('#tabs button').forEach(x=>x.classList.toggle('on',x==b));['learn','viz','prac'].forEach(t=>$('#'+t).hidden=t!=b.dataset.t)});
+/* deck */
+const deck=$('#deck'),sl=$$('.s'),dots=$('#dots');let cur=0;
+sl.forEach((_,i)=>{const d=document.createElement('i');d.onclick=()=>go(i);dots.append(d)});
+function go(i){i=Math.max(0,Math.min(sl.length-1,i));deck.scrollTo({left:i*deck.clientWidth,behavior:'smooth'})}
+function upd(){const i=Math.round(deck.scrollLeft/deck.clientWidth);cur=i;sl.forEach((s,k)=>s.classList.toggle('on',k==i));[...dots.children].forEach((d,k)=>d.classList.toggle('on',k==i))}
+deck.onscroll=upd;upd();$('#pv').onclick=()=>go(cur-1);$('#nx').onclick=()=>go(cur+1);
+addEventListener('keydown',e=>{if(!$('#learn').hidden&&e.target.tagName!='INPUT'){if(e.key=='ArrowRight')go(cur+1);if(e.key=='ArrowLeft')go(cur-1)}});
+/* viz 1 */
+const P=[{n:'Ba',h:160},{n:'Nam',h:160},{n:'Lan',h:178}];
+$('#sl').innerHTML=P.map((p,i)=>`<div class="pl"><b>${p.n}</b><input type="range" min="140" max="190" value="${p.h}" data-i="${i}"><span id="v${i}"></span></div>`).join('');
+function cmpS(a,b){if(Math.abs(a.h-b.h)<2)return[`${a.n} is as tall as ${b.n}.`];const[x,y]=a.h>b.h?[a,b]:[b,a];return[`${x.n} is taller than ${y.n}.`,`${y.n} is not as tall as ${x.n}.`]}
+function v1(){$('#bars').innerHTML=P.map(p=>`<div><i style="height:${(p.h-120)*3}px"></i>${p.n}<br><span class="mut">${p.h} cm</span></div>`).join('');P.forEach((p,i)=>$('#v'+i).textContent=p.h);
+const m=Math.max(...P.map(p=>p.h)),t=P.filter(p=>p.h==m);let o=[...cmpS(P[0],P[1]),...cmpS(P[1],P[2]),...cmpS(P[0],P[2])];
+o.push(t.length==1?`${t[0].n} is the tallest of the three. / No one is taller than ${t[0].n}.`:`${t.map(x=>x.n).join(' and ')} are the tallest (bằng nhau).`);
+$('#out').innerHTML=o.map(s=>`<p>${s}</p>`).join('')}
+$$('#sl input').forEach(r=>r.oninput=()=>{P[r.dataset.i].h=+r.value;v1()});v1();
+/* viz 2 */
+function v2(){const h=+$('#hr').value,s=30+h*7;$('#hv').textContent=h+'h';$('#hb1').style.width=h*10+'%';$('#hb2').style.width=s+'%';$('#o2').innerHTML=`<p>${h?`The more you study (${h}h), the better your result will be (${s}/100).`:'Chưa học… kết quả còn thấp. Kéo thanh trượt thử nhé!'}</p>`}
+$('#hr').oninput=v2;v2();
+/* viz 3 */
+const W={tall:['tall','taller','the tallest','Từ ngắn ➤ thêm -er / -est'],big:['big','bigger','the biggest','1 nguyên âm + 1 phụ âm ➤ nhân đôi phụ âm'],nice:['nice','nicer','the nicest','Tận cùng e ➤ chỉ thêm -r / -st'],happy:['happy','happier','the happiest','Phụ âm + y ➤ đổi y thành i'],beautiful:['beautiful','more beautiful','the most beautiful','Từ dài ➤ more / the most'],carefully:['carefully','more carefully','the most carefully','Trạng từ dài ➤ more / the most'],good:['good','better','the best','Bất quy tắc'],bad:['bad','worse','the worst','Bất quy tắc'],little:['little','less','the least','Bất quy tắc'],far:['far','farther / further','the farthest / furthest','Bất quy tắc']};
+$('#wm').innerHTML=Object.keys(W).map(k=>`<button class="btn" data-w="${k}">${k}</button> `).join('');
+$$('#wm button').forEach(b=>b.onclick=()=>{const w=W[b.dataset.w];$$('#wm button').forEach(x=>x.classList.toggle('p',x==b));$('#wo').innerHTML=`<span class="chip">${w[0]}</span> → <span class="chip">${w[1]}</span> → <span class="chip h">${w[2]}</span><p class="tip">${w[3]}</p>`});
+$('#wm button').click();
+/* data */
+const R={S:'So sánh nhất, từ ngắn: the + adj-est (y→i: the funniest, the laziest, the busiest; nhân đôi phụ âm: the hottest).',L:'So sánh nhất, từ dài: the most + adj.',C:'So sánh hơn, từ ngắn: adj-er + than (hot→hotter, easy→easier).',M:'So sánh hơn, từ dài: more + adj + than. much / far / a lot chỉ đứng trước để nhấn mạnh.',A:'Bổ nghĩa cho động từ thường ➤ dùng TRẠNG TỪ: ngắn thêm -er, dài dùng more (more carefully). Các từ fast, hard, early, loud giữ nguyên dạng khi là trạng từ.',E:'So sánh bằng / phủ định: as + adj/adv + as. Sau động từ thường dùng trạng từ (as well as, as fluently as).',D:'So sánh kép: The + so sánh hơn, the + so sánh hơn (càng… càng…). Cả hai vế đều phải có THE.',I:'Bất quy tắc: good/well ➤ better ➤ best; bad ➤ worse ➤ worst; many/much ➤ more ➤ most.',X:'little ➤ less ➤ least. “less + adj + than” = ít … hơn.',T:'So sánh giữa HAI đối tượng (of the two) ➤ the + so sánh hơn.'};
+const ANS='CBDABBAADBBDAADABCBCAADCADDCCDADBADAACDA'.slice(0,0)+'CBDABBAADB'+'BDAAADCBBC'+'ACDCADDCCD'+'ADBADAACDA',RU='SCEMILLAMA'+'DSELIDXAMC'+'TIAESMLXAD'+'ASAXDSIECS';
+const M=`Of all the students in my class, Nam is ___.|taller|tall|the tallest|the most tall
+This test is much ___ than the one we took last week.|the easiest|easier|easy|more easy
+He doesn’t play football ___ his brother does.|as good as|better than|best|as well as
+My new house is ___ than my old one.|much more comfortable|much comfortable|most comfortable|more comfortably
+The weather today is ___ it was yesterday.|more bad than|worse than|bad than|worst than
+She is ___ girl I have ever met.|beautifulest|the most beautiful|the beautiful|more beautiful
+This is ___ movie I’ve watched in my life. I couldn’t stop sleeping.|the most boring|boring|more boring|the boring
+My father drives ___ than my mother.|more carefully|carefully|more careful|careful
+I think Math is ___ than English.|difficult|the most difficult|difficulter|more difficult
+You should run ___ if you want to catch the bus.|fastest|faster|more fastly|fastly
+___ you study, ___ your grades will be.|The harder / better|The harder / the better|Harder / the better|Harder / better
+Today is ___ day of the year.|hotter|hot|hottest|the hottest
+No one in our club speaks English ___ Lan.|as fluently as|as fluent as|the most fluently|more fluently
+Peter is ___ student in the school.|the most intelligent|more intelligent|intelligentest|intelligent
+His car runs ___ than mine.|better|more better|gooder|best
+___ he gets, ___ he becomes.|The old / the wise|Older / wiser|The older / wiser|The older / the wiser
+This exercise is ___ than I thought.|least difficult|little difficult|less difficult|the least difficult
+She works ___ than anyone else in the office.|hard|harder|the hardest|more hard
+Her illness was ___ than we thought at first.|more seriously|far more serious|far serious|much serious
+The population of Tokyo is ___ than that of London.|large|largest|larger|more large
+John is ___ of the two boys.|the taller|taller|tallest|the tallest
+This is ___ book I have ever read.|goodest|better|the best|best
+She sings ___ than her sister.|beautifully|beautiful|more beautiful|more beautifully
+The test was not ___ I expected.|so difficult than|as difficult than|as difficult as|more difficult as
+Which is ___ river in the world?|the longest|longest|long|longer
+Health is ___ than money.|the most important|important|most important|more important
+Of the three sisters, Jane is ___.|more beautiful|the more beautiful|most beautiful|the most beautiful
+I have ___ time to play sports than I used to.|the less|least|less|little
+He arrived ___ than expected.|early|more early|earlier|earliest
+___ we leave, ___ we will arrive.|Sooner / earlier|Soonest / fastest|The soon / the early|The sooner / the earlier
+Could you speak a bit ___ please?|more loudly|loudest|loud|louder
+He is ___ student I have ever taught.|laziest|lazier|the most lazy|the laziest
+A turtle moves ___ than a rabbit.|slower|more slowly|slow|slowly
+This dress is ___ expensive than that one.|less|least|few|a little
+___ you practice, ___ you will play.|More / better|The more / better|More / the better|The more / the better
+My mother is ___ person in the family.|the busiest|busiest|the busy|the most busy
+Your handwriting is ___ than mine.|worse|bad|more badly|worst
+He didn’t do the test ___ I did.|best|better than|as well as|as good as
+Travelling by plane is ___ than travelling by train.|the fastest|fastest|more fast|faster
+That is ___ joke I have ever heard.|the funniest|funniest|funnier|funny`;
+const RW=`Mary is taller than Jane.|Jane is not|as tall as Mary^so tall as Mary
+My house is bigger than your house.|Your house is not|as big as my house^as big as mine
+A car is more expensive than a motorbike.|A motorbike is not|as expensive as a car
+He runs faster than I do.|I don’t|run as fast as he does
+English is easier to learn than Chinese.|Chinese is not|as easy to learn as English
+Today is hotter than yesterday.|Yesterday was not|as hot as today
+She sings more beautifully than her sister.|Her sister doesn’t|sing as beautifully as she does
+This computer works better than that one.|That computer doesn’t|work as well as this one
+My brother is not as strong as my father.|My father is|stronger than my brother
+I didn’t arrive as early as you did.|You arrived|earlier than I did
+This film is not as interesting as the one we watched last week.|The film we watched last week was|more interesting than this one^more interesting than this film
+Silver is not as valuable as gold.|Gold is|more valuable than silver
+No one in my class is taller than Peter.|Peter is|the tallest student in my class^the tallest in my class
+Nothing in this shop is more expensive than this diamond ring.|This diamond ring is|the most expensive thing in this shop
+No river in the world is longer than the Nile.|The Nile is|the longest river in the world
+Nobody in the company works harder than Mr. Smith.|Mr. Smith is|the hardest worker in the company
+No other student in the school is as intelligent as Mary.|Mary is|the most intelligent student in the school
+I have never read a more romantic story than this.|This is|the most romantic story I have ever read
+Mount Everest is the highest mountain in the world.|No mountain|in the world is higher than Mount Everest
+Russia is the largest country in the world.|No country|in the world is larger than Russia
+He is the best player in our team.|No one|in our team is better than him
+This is the most delicious cake I have ever eaten.|I have never|eaten a more delicious cake than this
+If you study hard, you will get good marks.|The harder|you study, the better marks you will get
+If the weather is warm, I feel good.|The warmer|the weather is, the better I feel
+As he grows older, he becomes more careful.|The older|he gets, the more careful he becomes^he grows, the more careful he becomes
+If you read many books, you will have much knowledge.|The more|books you read, the more knowledge you will have
+As she practices speaking English more, she speaks it more fluently.|The more|she practices speaking English, the more fluently she speaks it
+If the hotel is cheap, the services are bad.|The cheaper|the hotel is, the worse the services are
+As we produce more plastic, our environment becomes more polluted.|The more plastic|we produce, the more polluted our environment becomes
+If you leave early, you will arrive soon.|The earlier|you leave, the sooner you will arrive`;
+const HS=`Digital reading may be better for students than print reading.~Print reading is definitely better for students than digital reading.~Print reading is likely not as bad for students as digital reading.~Print reading is certainly worse for students than digital reading.~Print reading is probably not as good for students as digital reading.~D~“may be better” ≈ “probably”. Digital hơn ➤ print không tốt bằng digital. Giữ mức độ chắc chắn (may/probably), loại A và C vì quá tuyệt đối.
+Health is more important than money.~Money is more important than health.~Money is as important as health.~Health is not as important as money.~Money is not as important as health.~D~Health hơn money ➤ Money is not as important as health (đảo so sánh hơn thành not as … as).
+I have never read a more interesting book than this.~This is the most interesting book I have ever read.~This is an interesting book I have ever read.~I have read more interesting books than this.~No book is as interesting as this one I have never read.~A~Never … more … than ➤ This is the most … I have ever …
+No one in the class is taller than Ba.~Ba is taller than someone in the class.~Ba is as tall as everyone in the class.~Ba is the tallest student in the class.~Someone is taller than Ba in the class.~C~Không ai cao hơn Ba ➤ Ba cao nhất (the tallest).
+He works harder than anyone else in the company.~He works the hardest in the company.~Everyone in the company works harder than him.~No one in the company works as hard as him.~Both B and C are correct.~A~Lưu ý: file gốc ghi D nhưng B bị ngược nghĩa. Thực tế A và C đều tương đương câu gốc (hơn bất kỳ ai ➤ nhất ➤ không ai bằng). Chọn A.
+A car is much more expensive than a motorbike.~A motorbike is as expensive as a car.~A motorbike is slightly cheaper than a car.~A car is not as expensive as a motorbike.~A motorbike is much less expensive than a car.~D~Giữ mức độ “much”; slightly sai mức độ, A và C sai nghĩa.
+The more you practice, the better you become.~If you practice more, you become worse.~If you practice a lot, you will improve.~Practicing less makes you better.~You become better if you don’t practice.~B~So sánh kép là quan hệ tỉ lệ thuận: luyện nhiều ➤ tiến bộ.
+Jane doesn’t sing as beautifully as her sister.~Jane’s sister sings less beautifully than she does.~Jane’s sister sings more beautifully than she does.~Jane and her sister sing equally beautifully.~Jane sings more beautifully than her sister.~B~Jane not as … as chị ➤ chị hát hay hơn Jane.
+Today is hotter than yesterday.~Yesterday was as hot as today.~Yesterday was hotter than today.~Yesterday was not as hot as today.~Today is not as hot as yesterday.~C~Hôm nay nóng hơn ➤ hôm qua không nóng bằng hôm nay.
+This is the worst movie I’ve ever watched.~I have never watched a worse movie than this.~I have ever watched worse movies than this.~I have never watched a good movie like this.~This movie is better than other movies I’ve watched.~A~Nhất ➤ never … worse than: chưa từng xem phim nào tệ hơn.
+Mount Everest is the highest mountain in the world.~Mount Everest is not as high as other mountains.~Some mountains in the world are higher than Mount Everest.~Mount Everest is higher than some mountains in the world.~No mountain in the world is as high as Mount Everest.~D~Nhất ➤ No + N + as/more … as/than.
+English is easier to learn than Math.~Math is as easy to learn as English.~English is not as easy to learn as Math.~Math is not as easy to learn as English.~Math is easier to learn than English.~C~English dễ hơn ➤ Math không dễ bằng English.
+The older he gets, the more careful he becomes.~When he gets older, he becomes less careful.~He is old, so he is careful.~He becomes more careful because he is old.~As he grows older, his carefulness increases.~D~Càng … càng ≈ as + tăng tiến; D diễn tả đúng sự tăng dần.
+Silver is not as heavy as gold.~Gold is heavier than silver.~Silver is heavier than gold.~Gold is not as heavy as silver.~Gold and silver are equally heavy.~A~Bạc không nặng bằng vàng ➤ vàng nặng hơn bạc.
+You arrived earlier than I did.~I arrived earlier than you did.~I didn’t arrive as early as you did.~We arrived at the same time.~You didn’t arrive as early as I did.~B~Bạn đến sớm hơn ➤ tôi không đến sớm bằng bạn.
+This is the least interesting book in the library.~This book is less interesting than any other book in the library.~No other book in the library is as interesting as this one.~All other books in the library are less interesting than this one.~Every book in the library is as interesting as this one.~A~Least interesting ➤ less interesting than any other. B là nghĩa “thú vị nhất”.
+No other metal is as valuable as gold.~Gold is more valuable than some metals.~Gold is less valuable than other metals.~Gold is the most valuable metal.~Some metals are more valuable than gold.~C~Không kim loại nào bằng vàng ➤ vàng đáng giá nhất.
+A turtle moves slower than a rabbit.~A rabbit doesn’t move as fast as a turtle.~A turtle moves as slow as a rabbit.~A rabbit moves slower than a turtle.~A turtle doesn’t move as fast as a rabbit.~D~Rùa chậm hơn thỏ ➤ rùa không nhanh bằng thỏ.
+The cheaper the hotel is, the worse the services are.~If the hotel is cheap, the services are bad.~Expensive hotels always have bad services.~The services are worse if the hotel is more expensive.~Cheap hotels usually have good services.~A~Càng rẻ càng tệ ➤ khách sạn rẻ thì dịch vụ kém.
+She dances more gracefully than anyone in the club.~She is the most gracefully dancer in the club.~Everyone in the club dances more gracefully than she does.~She doesn’t dance as gracefully as everyone in the club.~No one in the club dances as gracefully as she does.~D~Hơn bất cứ ai ➤ không ai bằng cô ấy. A sai ngữ pháp (the most graceful dancer).`;
+const Q={m:M.split('\n').map((l,i)=>{const p=l.split('|');return{q:p[0],o:p.slice(1),a:'ABCD'.indexOf(ANS[i]),e:R[RU[i]]}}),
+h:HS.split('\n').map(l=>{const p=l.split('~');return{q:p[0],o:p.slice(1,5),a:'ABCD'.indexOf(p[5]),e:p[6]}}),
+r:RW.split('\n').map(l=>{const p=l.split('|');return{o:p[0],p:p[1],a:p[2]}})};
+const hint=i=>i<8?'Câu so sánh hơn ➤ đảo chủ ngữ và dùng not as … as.':i<12?'Not as … as ➤ đảo thành so sánh hơn.':i<18?'No one … more … than X ➤ X is the + so sánh nhất.':i<22?'So sánh nhất ➤ No + N + so sánh hơn, hoặc never … more … than.':'If / As … ➤ so sánh kép: The + hơn, the + hơn.';
+const S={m:{i:0,a:{},v:{}},r:{i:0,a:{},v:{}},h:{i:0,a:{},v:{}}};let mode='m';
+$$('#sub button').forEach(b=>b.onclick=()=>{mode=b.dataset.m;$$('#sub button').forEach(x=>x.classList.toggle('on',x==b));draw()});
+const nz=s=>s.toLowerCase().replace(/[’']/g,'').replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim();
+function draw(){const s=S[mode],d=Q[mode],i=s.i,q=d[i],n=d.length,done=Object.keys(s.a).length,sc=Object.values(s.a).filter(x=>x).length;
+let h=`<div class="sc">Câu <b>${i+1}/${n}</b> · Đã làm ${done} · Đúng <b>${sc}</b></div><div class="grid">${d.map((_,k)=>`<button data-k="${k}" class="${s.a[k]===1?'y':s.a[k]===0?'n':''} ${k==i?'c':''}">${k+1}</button>`).join('')}</div>`;
+const a=s.a[i],ans=a!==undefined;
+if(mode=='r'){h+=`<div class="k">Viết lại câu cho nghĩa không đổi</div><div class="q">${q.o}</div><div class="mut" style="margin-bottom:6px">➤ <b style="color:var(--g1)">${q.p}</b> …</div><input type="text" id="inp" placeholder="Nhập phần còn lại…" value="${(s.v[i]||'').replace(/"/g,'&quot;')}" ${ans?'disabled':''}>`;
+if(ans)h+=`<div class="exp ${a?'':'bad'}">${a?'✅ Chính xác!':'❌ Chưa đúng.'}<br><b>Đáp án:</b> ${q.p} ${q.a.split('^').join(' <i>(hoặc)</i> ')}.<br><span class="mut">${hint(i)}</span></div>`;
+else h+=`<div class="row"><button class="btn p" id="chk">Kiểm tra</button><button class="btn" id="shw">Xem đáp án</button></div>`}
+else{h+=`<div class="k">${mode=='m'?'Chọn đáp án đúng nhất':'Chọn câu có nghĩa gần nhất'}</div><div class="q">${q.q}</div>`+q.o.map((t,k)=>`<button class="opt ${ans?(k==q.a?'ok':k==s.v[i]?'no':'dim'):''}" data-o="${k}" ${ans?'disabled':''}><b>${'ABCD'[k]}.</b>${t}</button>`).join('');
+if(ans)h+=`<div class="exp ${a?'':'bad'}">${a?'✅ Chính xác!':'❌ Chưa đúng.'} Đáp án: <b>${'ABCD'[q.a]}</b>.<br>${q.e}</div>`}
+h+=`<div class="row"><button class="btn" id="pp">← Trước</button><button class="btn p" id="nn">Tiếp →</button></div>`;
+$('#pbox').innerHTML=h;
+$$('#pbox .grid button').forEach(b=>b.onclick=()=>{s.i=+b.dataset.k;draw()});
+$('#pp').onclick=()=>{s.i=Math.max(0,i-1);draw()};$('#nn').onclick=()=>{s.i=Math.min(n-1,i+1);draw()};
+$$('#pbox .opt').forEach(b=>b.onclick=()=>{const k=+b.dataset.o;s.v[i]=k;s.a[i]=k==q.a?1:0;(k==q.a?ok:no)();draw()});
+if(mode=='r'&&!ans){const f=r=>{const v=$('#inp').value;s.v[i]=v;let u=nz(v);const p=nz(q.p);if(u.startsWith(p+' '))u=u.slice(p.length+1);const g=q.a.split('^').some(x=>nz(x)==u);s.a[i]=g?1:0;(g?ok:no)();draw()};
+$('#chk').onclick=f;$('#shw').onclick=()=>{s.v[i]=$('#inp').value;s.a[i]=0;no();draw()};$('#inp').onkeydown=e=>{if(e.key=='Enter')f()}}}
+draw();
+</script></body></html>
